@@ -8,6 +8,7 @@ class Webpage:
     def __init__(self, target_link):
         self.target = target_link
         self.driver = webdriver.Chrome("drivers/chromedriver")
+        #self.db_instance = DBAction(db_path)
         self.driver.get(target_link)
     def aggregate(self, type):
         raw_data = request.urlopen(self.target).read()
@@ -23,10 +24,13 @@ class Webpage:
         check_click = self.driver.find_element_by_partial_link_text(target_button)
         if check_click is not None:
             check_click.click()
+            self.update_url()
             return True
         return False
     def get_url(self):
         return self.driver.current_url
+    def update_url(self):
+        self.target = self.get_url()
     def close_driver(self):
         self.driver.close()
 
@@ -34,17 +38,15 @@ class Webpage:
             
             
 def loop_me(curr_url):
+    this_item = Webpage(curr_url)
     is_running = True
     while(is_running):
-        this_item = Webpage(curr_url)
         addresses = this_item.find('a','address', 'lxml')
         prices = this_item.find("a", "price", "lxml")
         for num in range(len(addresses)):
             print(addresses[num])
             print(prices[num])
         is_running = this_item.click_button("Next")
-        curr_url = this_item.get_url()
-        this_item.close_driver()
 
 loop_me('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE')
 
