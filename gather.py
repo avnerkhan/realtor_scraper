@@ -1,16 +1,18 @@
 import sqlite3 as db
-import scraper as sp 
 
 class DBAction:
-    def __init__(self, url):
-        self.curr_start = sp.Webpage(url)
+    def __init__(self, this_path):
+        self.path = this_path
         pass
     def create_table(self, table_name):
+        with db.connect(self.path) as connection:
+            cursor = connection.cursor()
+            cursor.execute("""""")
         pass
-    def retrieve_from_db(self, path, table_name):
+    def retrieve_from_db(self, table_name):
         pass
-    def push_to_db(self, path, table_name):
-        with db.connect(path) as connection:
+    def push_to_db(self, table_name):
+        with db.connect(self.path) as connection:
             cursor = connection.cursor()
             cursor.execute("")
 
