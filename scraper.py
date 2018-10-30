@@ -1,5 +1,4 @@
 import bs4 as bs
-import sqlite3 as db
 import urllib.request as request
 from selenium import webdriver
 
