@@ -26,6 +26,8 @@ class Webpage:
         return False
     def get_url(self):
         return self.driver.current_url
+    def close_driver(self):
+        self.driver.close()
 
             
             
@@ -41,6 +43,7 @@ while(is_running):
     print(prices[0])
     is_running = this_item.click_button("Next")
     curr_url = this_item.get_url()
+    this_item.close_driver()
 
 
 
