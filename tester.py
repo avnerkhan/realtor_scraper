@@ -1,6 +1,7 @@
 from gather import DBAction
 from scraper import Webpage
 from nlp import Analyzer
+from selenium.common.exceptions import WebDriverException
 
 def show_me_data(db_path, table_name):
     curr_db = DBAction(db_path)
@@ -25,16 +26,22 @@ def loop_me_all(curr_url, db_path, table_name):
                 print(description[num])
                 print(prices[num])
                 print(other_array)
-                this_db.push_to_db(table_name, addresses[num], description[num] ,prices[num], other_info[num])
+                #this_db.push_to_db(table_name, addresses[num], description[num] ,prices[num], other_info[num])
         is_running = this_item.click_button("Next")
 
 def scrape_sold(curr_url, db_path, table_name):
     this_item = Webpage(curr_url)
-    #this_db = DBAction(db_path)
-    #this_db.create_table(table_name)
     is_running = True
-    print("should dump after")
-    print(this_item.dump('lxml'))
+    count = 0
+    photos = this_item.find_class("photo-wrap")
+    while count < len(photos):
+            curr_button = photos[count].find_element_by_tag_name("a")
+            curr_button.click()
+            this_item.go_back("back-to-search")
+            photos = this_item.find_class("photo-wrap")
+            print(len(photos))
+            count += 1
+    this_item.close_driver()
         
 
 
