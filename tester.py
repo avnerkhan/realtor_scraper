@@ -38,8 +38,8 @@ def scrape_sold(curr_url, db_path, table_name):
             curr_button = photos[count].find_element_by_tag_name("a")
             curr_button.click()
             this_item.go_back("back-to-search")
+            this_item.check_popup("acsFocusFirst")
             photos = this_item.find_class("photo-wrap")
-            print(len(photos))
             count += 1
     this_item.close_driver()
         

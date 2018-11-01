@@ -1,6 +1,7 @@
 import bs4 as bs
 import urllib.request as request
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 
 
@@ -34,9 +35,18 @@ class Webpage:
             return True
         return False
     def go_back(self, back_class):
-        back_button = self.driver.find_element_by_class_name(back_class)
-        back_button.click()
-        self.driver.refresh()
+        try:
+            back_button = self.driver.find_element_by_class_name(back_class)
+            back_button.click()
+            self.driver.refresh()
+        except NoSuchElementException:
+            pass
+    def check_popup(self, popup_id):
+        try:
+            bad_popup = self.driver.find_element_by_id(popup_id)
+            bad_popup.click()
+        except NoSuchElementException:
+            pass
     def get_url(self):
         return self.driver.current_url
     def update_url(self):
