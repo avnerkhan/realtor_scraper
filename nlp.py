@@ -8,3 +8,7 @@ class Analyzer:
         pass
     def estimate(self, price):
         pass
+
+
+#TODO:
+#Scrape site that has recently sold sites, and create a model off that to predict whether a when a house will sell

@@ -9,12 +9,12 @@ class Webpage:
         self.target = target_link
         self.driver = webdriver.Chrome("drivers/chromedriver")
         self.driver.get(target_link)
-    def aggregate(self, type):
+    def dump(self, type):
         raw_data = request.urlopen(self.target).read()
         better_data = bs.BeautifulSoup(raw_data, type)
         return better_data
     def find(self, tag, this_class , type):
-        data = self.aggregate(type)
+        data = self.dump(type)
         return_word = []
         for word in data.find_all(tag, class_=this_class):
             return_word.append(word.text)
