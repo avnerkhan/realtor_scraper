@@ -31,6 +31,8 @@ def loop_me_all(curr_url, db_path, table_name):
 
 def scrape_sold(curr_url, db_path, table_name):
     this_item = Webpage(curr_url)
+    prediction_set = DBAction(db_path)
+    prediction_set.create_table("predict")
     is_running = True
     count = 0
     photos = this_item.find_class("photo-wrap")
@@ -40,7 +42,7 @@ def scrape_sold(curr_url, db_path, table_name):
                     curr_button.click()
                     this_item.check_popup("acsFocusFirst")
                     this_item.load_page()
-                    get_data(this_item)
+                    get_data(this_item, prediction_set, table_name)
                     this_item.go_back()
                     this_item.check_popup("acsFocusFirst")
                     photos = this_item.find_class("photo-wrap")
@@ -49,11 +51,16 @@ def scrape_sold(curr_url, db_path, table_name):
             count += 1
     this_item.close_driver()
 
-def get_data(webpage):
+def get_data(webpage, curr_db, table_name):
         data_items = webpage.find_class("data-value")
+        prediction = webpage.find_class("key-fact-data")
+        price = None
         beds = data_items[0].text
         baths = data_items[1].text
-        sqft = data_items[2]text
+        sqft = data_items[2].text
+        time_to_foreclose = prediction[2].text.split(" ")[0]
+        if isinstance(time_to_foreclose, int):
+                #curr_db.push_to_db_predict(table_name, beds, baths, sqft, time_to_foreclose)
 
 
 
