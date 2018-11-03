@@ -40,16 +40,21 @@ def scrape_sold(curr_url, db_path, table_name):
                     curr_button.click()
                     this_item.check_popup("acsFocusFirst")
                     this_item.load_page()
+                    get_data(this_item)
                     this_item.go_back()
                     this_item.check_popup("acsFocusFirst")
                     photos = this_item.find_class("photo-wrap")
-                    print(len(photos))
             except:
                     pass
             count += 1
     this_item.close_driver()
 
-        
+def get_data(webpage):
+        data_items = webpage.find_class("data-value")
+        beds = data_items[0].text
+        baths = data_items[1].text
+        sqft = data_items[2]text
+
 
 
 #loop_me_all('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE', "db/dallas.db", "all")
