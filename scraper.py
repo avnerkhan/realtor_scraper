@@ -42,12 +42,11 @@ class Webpage:
         try:
             bad_popup = self.driver.find_element_by_id(popup_id)
             bad_popup.click()
-            self.driver.refresh()
+            self.load_page()
         except NoSuchElementException:
             pass
-    def find_house_pages(self, partial_text):
-        house_cards = self.driver.find_elements_by_partial_link_text(partial_text)
-        return house_cards
+    def load_page(self):
+        self.driver.get(self.get_url())
     def get_url(self):
         return self.driver.current_url
     def close_driver(self):

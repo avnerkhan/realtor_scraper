@@ -39,6 +39,7 @@ def scrape_sold(curr_url, db_path, table_name):
             try:
                     curr_button.click()
                     this_item.check_popup("acsFocusFirst")
+                    this_item.load_page()
                     this_item.go_back()
                     this_item.check_popup("acsFocusFirst")
                     photos = this_item.find_class("photo-wrap")
