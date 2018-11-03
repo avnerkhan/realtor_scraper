@@ -35,13 +35,19 @@ def scrape_sold(curr_url, db_path, table_name):
     count = 0
     photos = this_item.find_class("photo-wrap")
     while count < len(photos):
-            curr_button = photos[count].find_element_by_tag_name("a")
-            curr_button.click()
-            this_item.go_back("back-to-search")
-            this_item.check_popup("acsFocusFirst")
-            photos = this_item.find_class("photo-wrap")
+            curr_button = photos[count]
+            try:
+                    curr_button.click()
+                    this_item.check_popup("acsFocusFirst")
+                    this_item.go_back()
+                    this_item.check_popup("acsFocusFirst")
+                    photos = this_item.find_class("photo-wrap")
+                    print(len(photos))
+            except:
+                    pass
             count += 1
     this_item.close_driver()
+
         
 
 

@@ -8,6 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 class Webpage:
     def __init__(self, target_link):
+        self.orginal = target_link
         self.driver = webdriver.Chrome("drivers/chromedriver")
         self.driver.get(target_link)
     def dump(self, type):
@@ -32,19 +33,21 @@ class Webpage:
             check_click.click()
             return True
         return False
-    def go_back(self, back_class):
+    def go_back(self):
         try:
-            back_button = self.driver.find_element_by_class_name(back_class)
-            back_button.click()
-            self.driver.refresh()
+            self.driver.get(self.orginal)
         except NoSuchElementException:
             pass
     def check_popup(self, popup_id):
         try:
             bad_popup = self.driver.find_element_by_id(popup_id)
             bad_popup.click()
+            self.driver.refresh()
         except NoSuchElementException:
             pass
+    def find_house_pages(self, partial_text):
+        house_cards = self.driver.find_elements_by_partial_link_text(partial_text)
+        return house_cards
     def get_url(self):
         return self.driver.current_url
     def close_driver(self):
