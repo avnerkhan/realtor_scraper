@@ -1,4 +1,5 @@
 import sqlite3 as db
+from scraper import parse_string
 
 class DBAction:
     def __init__(self, this_path):
@@ -18,7 +19,6 @@ class DBAction:
             cursor = connection.cursor()
             cursor.execute("""CREATE TABLE IF NOT EXISTS '{}' (
                 address text,
-                description text,
                 price int,
                 beds int,
                 baths int,
@@ -34,8 +34,8 @@ class DBAction:
         with db.connect(self.path) as connection:
             cursor = connection.cursor()
             cursor.execute("INSERT INTO '{}' VALUES (?, ?, ?, ?, ?)".format(table_name), (price,beds, bath, sqft, time_to_foreclose))
-    def push_to_db(self, table_name, address, description ,price, other):
+    def push_to_db(self, table_name, address, price, other):
         other_array = other.split()
         with db.connect(self.path) as connection:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO '{}' VALUES (?, ?, ?, ?, ?, ?, ?)".format(table_name), (address, description ,price, other_array[0], other_array[2], other_array[4], other_array[6].replace(",", "")))
+            cursor.execute("INSERT INTO '{}' VALUES (?, ?, ?, ?, ?, ?)".format(table_name), (address, parse_string(price), parse_string(other_array[0]), parse_string(other_array[2]), parse_string(other_array[4]), parse_string(other_array[6])))

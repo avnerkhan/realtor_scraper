@@ -53,6 +53,18 @@ class Webpage:
         self.driver.close()
 
 
+def parse_string(integer):
+        return_int = ""
+        for num in integer:
+                try:
+                        if int(num) in range(0, 9):
+                                return_int += str(num)
+                except:
+                        pass
+        return int(return_int)
+                    
+
+
 
 
 

@@ -1,5 +1,6 @@
 from gather import DBAction
 from scraper import Webpage
+from scraper import parse_string
 from nlp import Analyzer
 from selenium.common.exceptions import WebDriverException
 
@@ -15,7 +16,6 @@ def loop_me_all(curr_url, db_path, table_name):
     is_running = True
     while(is_running):
         addresses = this_item.find('a','address', 'lxml')
-        description = this_item.find('p','property-description','lxml')
         prices = this_item.find("a", "price", "lxml")
         other_info = this_item.find("ul", "" , 'lxml')
         for num in range(len(addresses)):
@@ -23,10 +23,9 @@ def loop_me_all(curr_url, db_path, table_name):
             print(other_array)
             if len(other_array) == 8:
                 print(addresses[num])
-                print(description[num])
                 print(prices[num])
                 print(other_array)
-                this_db.push_to_db(table_name, addresses[num], description[num] ,prices[num], other_info[num])
+                this_db.push_to_db(table_name, addresses[num], prices[num], other_info[num])
         is_running = this_item.click_button("Next")
 
 def scrape_sold(curr_url, db_path, table_name):
@@ -82,18 +81,8 @@ def get_data(webpage, curr_db, table_name):
                 pass
 
 
-def parse_string(integer):
-        return_int = ""
-        for num in integer:
-                try:
-                        if int(num) in range(0, 9):
-                                return_int += str(num)
-                except:
-                        pass
-        return int(return_int)
-
 
 
 #loop_me_all('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE', "db/dallas.db", "all")
-#print(show_me_data("db/dallas.db", "all"))
-scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')
+print(show_me_data("db/dallas.db", "all"))
+#scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')
