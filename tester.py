@@ -28,21 +28,23 @@ def scrape_sold(curr_url, db_path, table_name):
     prediction_set = DBAction(db_path)
     prediction_set.create_table_predict(table_name)
     is_running = True
-    count = 0
-    photos = this_item.find_class("photo-wrap")
-    while count < len(photos):
-            curr_button = photos[count]
-            try:
-                    curr_button.click()
-                    this_item.check_popup("acsFocusFirst")
-                    this_item.load_page()
-                    get_data(this_item, prediction_set ,table_name)
-                    this_item.go_back()
-                    this_item.check_popup("acsFocusFirst")
-                    photos = this_item.find_class("photo-wrap")
-            except:
-                    pass
-            count += 1
+    while is_running:
+            count = 0
+            photos = this_item.find_class("photo-wrap")
+            while count < len(photos):
+                curr_button = photos[count]
+                try:
+                        curr_button.click()
+                        this_item.check_popup("acsFocusFirst")
+                        this_item.load_page()
+                        get_data(this_item, prediction_set ,table_name)
+                        this_item.go_back()
+                        this_item.check_popup("acsFocusFirst")
+                        photos = this_item.find_class("photo-wrap")
+                except:
+                        pass
+                count += 1
+            is_running = this_item.click_button_class("next")
     this_item.close_driver()
 
 
@@ -74,5 +76,5 @@ def get_data(webpage, curr_db, table_name):
 
 
 #loop_me_all('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE', "db/dallas.db", "all")
-print(show_me_data("db/dallas.db", "all"))
-#scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')
+#print(show_me_data("db/dallas.db", "all"))
+scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')

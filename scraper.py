@@ -33,6 +33,13 @@ class Webpage:
             check_click.click()
             return True
         return False
+    def click_button_class(self, target_button):
+        curr_button = self.driver.find_element_by_class_name(target_button)
+        if curr_button is not None:
+            curr_button.click()
+            return True
+        else:
+            return False 
     def go_back(self):
         try:
             self.driver.get(self.orginal)
