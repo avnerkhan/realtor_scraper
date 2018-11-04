@@ -62,7 +62,10 @@ def parse_string(integer):
                 except:
                         pass
         return int(return_int)
-                    
+        
+def add_if_not_null(add_arr, word):
+        if len(word) > 0:
+                add_arr.append(word)
 
 
 

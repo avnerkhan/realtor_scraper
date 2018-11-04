@@ -39,3 +39,8 @@ class DBAction:
         with db.connect(self.path) as connection:
             cursor = connection.cursor()
             cursor.execute("INSERT INTO '{}' VALUES (?, ?, ?, ?, ?, ?)".format(table_name), (address, parse_string(price), parse_string(other_array[0]), parse_string(other_array[2]), parse_string(other_array[4]), parse_string(other_array[6])))
+
+def show_me_data(db_path, table_name):
+    curr_db = DBAction(db_path)
+    shown_info = curr_db.retrieve_from_db(table_name)
+    return shown_info    

@@ -1,13 +1,8 @@
-from gather import DBAction
-from scraper import Webpage
-from scraper import parse_string
+from gather import DBAction, show_me_data
+from scraper import Webpage, parse_string, add_if_not_null
 from nlp import Analyzer
 from selenium.common.exceptions import WebDriverException
-
-def show_me_data(db_path, table_name):
-    curr_db = DBAction(db_path)
-    shown_info = curr_db.retrieve_from_db(table_name)
-    return shown_info       
+   
             
 def loop_me_all(curr_url, db_path, table_name):
     this_item = Webpage(curr_url)
@@ -50,11 +45,6 @@ def scrape_sold(curr_url, db_path, table_name):
             count += 1
     this_item.close_driver()
 
-
-
-def add_if_not_null(add_arr, word):
-        if len(word) > 0:
-                add_arr.append(word)
 
 def get_data(webpage, curr_db, table_name):
         data_items = webpage.find_class("data-value")
