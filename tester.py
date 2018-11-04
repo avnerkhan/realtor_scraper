@@ -26,13 +26,13 @@ def loop_me_all(curr_url, db_path, table_name):
                 print(description[num])
                 print(prices[num])
                 print(other_array)
-                #this_db.push_to_db(table_name, addresses[num], description[num] ,prices[num], other_info[num])
+                this_db.push_to_db(table_name, addresses[num], description[num] ,prices[num], other_info[num])
         is_running = this_item.click_button("Next")
 
 def scrape_sold(curr_url, db_path, table_name):
     this_item = Webpage(curr_url)
-    #prediction_set = DBAction(db_path)
-    #prediction_set.create_table("predict")
+    prediction_set = DBAction(db_path)
+    prediction_set.create_table_predict(table_name)
     is_running = True
     count = 0
     photos = this_item.find_class("photo-wrap")
@@ -42,7 +42,7 @@ def scrape_sold(curr_url, db_path, table_name):
                     curr_button.click()
                     this_item.check_popup("acsFocusFirst")
                     this_item.load_page()
-                    get_data(this_item, table_name)
+                    get_data(this_item, prediction_set ,table_name)
                     this_item.go_back()
                     this_item.check_popup("acsFocusFirst")
                     photos = this_item.find_class("photo-wrap")
@@ -57,7 +57,7 @@ def add_if_not_null(add_arr, word):
         if len(word) > 0:
                 add_arr.append(word)
 
-def get_data(webpage, table_name):
+def get_data(webpage, curr_db, table_name):
         data_items = webpage.find_class("data-value")
         other_data = webpage.find_class("summary-datapoint")
         prediction = webpage.find_class("key-fact-data")
@@ -68,12 +68,32 @@ def get_data(webpage, table_name):
                 add_if_not_null(potential_data, other.text)
         for predict in prediction:
                 add_if_not_null(potential_data, predict.text)
-        print(potential_data)
-        #if isinstance(time_to_foreclose, int):
-                #curr_db.push_to_db_predict(table_name, beds, baths, sqft, time_to_foreclose)
+        try:
+
+                beds = parse_string(potential_data[0])
+                baths = parse_string(potential_data[1])
+                sqft = parse_string(potential_data[2])
+                time_to_foreclose = parse_string(potential_data[4])
+                price = parse_string(potential_data[5])
+                curr_db.push_to_db_predict(table_name,price  ,beds, baths, sqft,time_to_foreclose)
+        except Exception as error:
+                print(error)
+                print(curr_db.retrieve_from_db(table_name))
+                pass
+
+
+def parse_string(integer):
+        return_int = ""
+        for num in integer:
+                try:
+                        if int(num) in range(0, 9):
+                                return_int += str(num)
+                except:
+                        pass
+        return int(return_int)
 
 
 
 #loop_me_all('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE', "db/dallas.db", "all")
 #print(show_me_data("db/dallas.db", "all"))
-scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', '', '')
+scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')

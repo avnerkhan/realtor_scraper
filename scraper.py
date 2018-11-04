@@ -52,9 +52,6 @@ class Webpage:
     def close_driver(self):
         self.driver.close()
 
-            
-
-
 
 
 
