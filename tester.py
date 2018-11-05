@@ -2,6 +2,7 @@ from gather import DBAction, show_me_data
 from scraper import Webpage, parse_string, add_if_not_null
 from nlp import Analyzer
 from selenium.common.exceptions import WebDriverException
+from threading import Thread
    
             
 def loop_me_all(curr_url, db_path, table_name):
@@ -75,6 +76,10 @@ def get_data(webpage, curr_db, table_name):
 
 
 
-#loop_me_all('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE', "db/dallas.db", "all")
-#print(show_me_data("db/dallas.db", "all"))
-scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')
+if __name__ == "__main__":
+        #Thread(target = loop_me_all('https://www.dallashomerealty.com/search/results/?county=Collin&city=Plano&subdivision=all&type=res&list_price_min=150000&list_price_max=all&area_min=all&beds_min=all&baths_min=all&lot_size_min=all&year_built_min=all&amenities=all&lot_description=all&school_district=all&sort_latest=true&keyword=houses%20in%20plano&gclid=EAIaIQobChMIiMzr6-Gs3gIVBtbACh2MMg95EAAYASAAEgIaSPD_BwE', "db/dallas.db", "all")).start()
+        Thread(target = scrape_sold('https://www.realtor.com/soldhomeprices/Dallas_TX', 'db/predict.db', 'predict')).start()
+
+
+
+
